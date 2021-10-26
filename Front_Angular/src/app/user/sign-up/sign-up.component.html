@@ -1,0 +1,51 @@
+<div>
+  <img src="/assets/img/users.png" id="icon" alt="User Icon" />
+</div>
+<form #signUpForm="ngForm" (ngSubmit)="signUpForm.valid && onSubmit(signUpForm)">
+
+  <input type="text" #login="ngModel" [(ngModel)]="userService.selectedUser.login" name="login" placeholder="login"
+    required [pattern]="loginRegex" [ngClass]="{'invalid-textbox' :signUpForm.submitted && !login.valid }">
+  <div *ngIf="signUpForm.submitted && login.errors">
+    <label *ngIf="login.errors.required" class="validation-message">This field is required.</label>
+    <label *ngIf="login.errors.pattern" class="validation-message">Invalid email address.</label>
+  </div>
+  <input type="password" #password="ngModel" [(ngModel)]="userService.selectedUser.password" name="password"
+    placeholder="Password" minlength="4" required
+    [ngClass]="{'invalid-textbox' :signUpForm.submitted && !password.valid }">
+  <div *ngIf="signUpForm.submitted && password.errors">
+    <label *ngIf="password.errors.required" class="validation-message">This field is required.</label>
+    <label *ngIf="password.errors.minlength" class="validation-message">Enter atleast 4 characters.</label>
+  </div>
+
+  <input type="text" #famille="ngModel" [(ngModel)]="userService.selectedUser.famille" name="famille"
+    placeholder="Famille">
+  <div *ngIf="signUpForm.submitted && !famille.valid">
+    <label class="validation-message">This field is required.</label>
+  </div>
+
+  <input type="text" #race="ngModel" [(ngModel)]="userService.selectedUser.race" name="race" placeholder="Race" required
+    [ngClass]="{'invalid-textbox' :signUpForm.submitted && !role.valid }">
+
+  <input type="text" #nourriture="ngModel" [(ngModel)]="userService.selectedUser.nourriture" name="nourriture"
+    placeholder="Nourriture" required [ngClass]="{'invalid-textbox' :signUpForm.submitted && !nourriture.valid }">
+
+  <input type="text" #age="ngModel" [(ngModel)]="userService.selectedUser.age" name="age" placeholder="Age" required
+    [ngClass]="{'invalid-textbox' :signUpForm.submitted && !age.valid }">
+
+
+
+
+
+
+  <input type="submit" value="Sign Up">
+</form>
+
+<!-- Success message -->
+<div class="success" *ngIf="showSucessMessage">
+  Saved successfully
+</div>
+
+<!-- Error message -->
+<div class="alert" *ngIf="serverErrorMessages">
+  {{serverErrorMessages}}
+</div>

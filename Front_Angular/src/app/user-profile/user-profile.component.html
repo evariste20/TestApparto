@@ -1,0 +1,129 @@
+<table *ngIf="userDetails && !edit" class="table-fill">
+  <thead>
+      <tr>
+          <th colspan="2" class="text-center">User Profile</th>
+      </tr>
+  </thead>
+
+  <tbody>
+      <tr>
+          <td>Login</td>
+          <td>{{userDetails.login}}</td>
+      </tr>
+      <tr>
+          <td>Mot De Passe</td>
+          <td>{{userDetails.password}}</td>
+      </tr>
+      <tr>
+        <td>Famille</td>
+        <td>{{userDetails.famille}}</td>
+    </tr>
+    <tr>
+        <td>Role</td>
+        <td>{{userDetails.race}}</td>
+    </tr>
+    <tr>
+        <td>Age</td>
+        <td>{{userDetails.age}}</td>
+    </tr>
+    <tr>
+        <td>Nourriture</td>
+        <td>{{userDetails.nourriture}}</td>
+    </tr>
+    <tr>
+        <td>Liste Amis</td>
+        <ul>
+          <li *ngFor="let amis of userDetails.listeAmis">{{ amis.login }}</li>
+      </ul>
+    </tr>
+
+      <tr>
+          <td colspan="2" class="text-center">
+              <input type="button" (click)="onLogout()" value="Logout" />
+          </td>
+      </tr>
+
+        <tr>
+          <td colspan="2" class="text-center">
+              <input type="button" (click)="onEdit(userDetails)" value="Modifier" />
+          </td>
+      </tr>
+
+ 
+
+  </tbody>
+</table>
+
+&nbsp;&nbsp;&nbsp;
+<table class="table-fill" *ngIf="!edit">
+    <thead>
+        <tr class="text-center"> <h2> Des Amis ? </h2>  </tr>
+        <tr> 
+            <th> Login </th>
+            <th> Age </th>
+            <th> Options </th>
+        </tr>
+         
+    </thead>
+    <tr *ngFor="let user of userAll">
+        <td> {{ user.login }} </td>
+        <td> {{ user.age }} </td> 
+        <td> 
+            <a class="action-btn" (click)="onAdd(user)">
+                <i class="material-icons"> Ajouter </i>
+            </a>
+            &nbsp;&nbsp;
+
+            <a class="action-btn" (click)="onDrop(user)">
+                <i class="material-icons"> Supprimer </i>
+            </a>
+    </td>
+    </tr>
+    <tbody>
+        
+    </tbody>
+</table>
+
+
+    
+      <div class="wrapper" *ngIf="edit">
+        <div id="formContent">
+            <div>
+                <img src="/assets/img/users.png" id="icon" alt="User Icon" />
+              </div>
+            <form #signUpForm="ngForm" (ngSubmit)="signUpForm.valid && onSubmit(signUpForm)" >
+    
+                <input type="text" #login="ngModel" [(ngModel)]="userService.selectedUser.login" name="login" placeholder="login"
+                required [pattern]="loginRegex" [ngClass]="{'invalid-textbox' :signUpForm.submitted && !login.valid }">
+              <div *ngIf="signUpForm.submitted && login.errors">
+                <label *ngIf="login.errors.required" class="validation-message">This field is required.</label>
+                <label *ngIf="login.errors.pattern" class="validation-message">Invalid email address.</label>
+              </div>
+              <input type="password" #password="ngModel" [(ngModel)]="userService.selectedUser.password" name="password"
+                placeholder="Password" minlength="4" required
+                [ngClass]="{'invalid-textbox' :signUpForm.submitted && !password.valid }">
+              <div *ngIf="signUpForm.submitted && password.errors">
+                <label *ngIf="password.errors.required" class="validation-message">This field is required.</label>
+                <label *ngIf="password.errors.minlength" class="validation-message">Enter atleast 4 characters.</label>
+              </div>
+            
+              <input type="text" #famille="ngModel" [(ngModel)]="userService.selectedUser.famille" name="famille"
+                placeholder="Famille">
+              <div *ngIf="signUpForm.submitted && !famille.valid">
+                <label class="validation-message">This field is required.</label>
+              </div>
+            
+              <input type="text" #race="ngModel" [(ngModel)]="userService.selectedUser.race" name="race" placeholder="Race" required
+                [ngClass]="{'invalid-textbox' :signUpForm.submitted && !race.valid }">
+            
+              <input type="text" #nourriture="ngModel" [(ngModel)]="userService.selectedUser.nourriture" name="nourriture"
+                placeholder="Nourriture" required [ngClass]="{'invalid-textbox' :signUpForm.submitted && !nourriture.valid }">
+            
+              <input type="text" #age="ngModel" [(ngModel)]="userService.selectedUser.age" name="age" placeholder="Age" required
+                [ngClass]="{'invalid-textbox' :signUpForm.submitted && !age.valid }">
+              <input type="submit" value="Update">
+            
+            </form>
+        </div>
+    </div>
+    
