@@ -3,6 +3,7 @@ import { UserService } from '../shared/user.service';
 import { Router } from "@angular/router";
 import { User } from '../shared/user.model';
 import { NgForm } from '@angular/forms';
+import { iif } from 'rxjs';
 
 @Component({
   selector: 'app-user-profile',
@@ -13,6 +14,7 @@ export class UserProfileComponent implements OnInit {
   userDetails;
   userAll;
   edit;
+  addAmis = true;
   serverErrorMessages;
   constructor(private userService: UserService, private router: Router) { }
 
@@ -52,20 +54,22 @@ export class UserProfileComponent implements OnInit {
 
   onSubmit(form : NgForm){
     this.edit = false;
-    //console.log(form.value);
+    console.log(form.value);
     var newUser = new User(); 
     newUser = form.value;
+    //console.log(this.userDetails.listeAmis);
     newUser._id = this.userDetails._id;
     if(this.userDetails.listeAmis == null ){
       newUser.listeAmis = [];
     }else{
-      newUser.listeAmis = this.userDetails.listeAmis;
+     newUser.listeAmis = newUser.listeAmis.concat(this.userDetails.listeAmis);
     }
     console.log(newUser);
+
     this.userService.putUser(newUser).subscribe(
       res => {
         //this.userService.setToken(res['token']);
-        this.router.navigateByUrl('/userprofile');
+        //this.router.navigateByUrl('/userprofile');
         this.ngOnInit();
       },
       err => {
@@ -110,4 +114,46 @@ export class UserProfileComponent implements OnInit {
       )
   }
 
+  addAmisOnlist(){  
+    if(this.addAmis == true)
+      this.addAmis = false;
+    else
+      this.addAmis = true;
+    console.log("addAmis" + this.addAmis);
+  }
+
+  onSubmit2(form : NgForm){
+
+    var newUser = new User();
+    newUser = form.value;
+    this.userDetails.listeAmis.push(newUser);
+
+    console.log(this.userDetails);
+
+    this.userService.postUser(form.value).subscribe(
+      res => {
+        //this.userService.setToken(res['token']);
+        //this.router.navigateByUrl('/userprofile');
+      },
+      err => {
+        this.serverErrorMessages = err.error.message;
+      }
+    );
+
+    this.userService.putUser(this.userDetails).subscribe(
+      res => {
+        this.router.navigateByUrl('/userprofile');
+        this.ngOnInit();
+      }, 
+      err => {
+        this.serverErrorMessages = err.error.message;
+      })
+
+
+  }
+
 }
+
+
+
+

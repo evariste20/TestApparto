@@ -14,6 +14,7 @@ module.exports.register = (req, res, next) => {
     user.age = req.body.age;
     user.race = req.body.race;
     user.nourriture = req.body.nourriture;
+    user.listeAmis = req.body.listeAmis;
     
         user.save((err, doc) => {
             if (!err)

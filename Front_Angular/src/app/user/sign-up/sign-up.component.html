@@ -24,17 +24,14 @@
   </div>
 
   <input type="text" #race="ngModel" [(ngModel)]="userService.selectedUser.race" name="race" placeholder="Race" required
-    [ngClass]="{'invalid-textbox' :signUpForm.submitted && !role.valid }">
+    [ngClass]="{'invalid-textbox' :signUpForm.submitted && !race.valid }">
 
   <input type="text" #nourriture="ngModel" [(ngModel)]="userService.selectedUser.nourriture" name="nourriture"
     placeholder="Nourriture" required [ngClass]="{'invalid-textbox' :signUpForm.submitted && !nourriture.valid }">
 
+
   <input type="text" #age="ngModel" [(ngModel)]="userService.selectedUser.age" name="age" placeholder="Age" required
     [ngClass]="{'invalid-textbox' :signUpForm.submitted && !age.valid }">
-
-
-
-
 
 
   <input type="submit" value="Sign Up">
@@ -42,7 +39,7 @@
 
 <!-- Success message -->
 <div class="success" *ngIf="showSucessMessage">
-  Saved successfully
+  Friends Saved successfully
 </div>
 
 <!-- Error message -->
